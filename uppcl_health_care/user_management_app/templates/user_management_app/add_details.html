@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Add Details</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <h3>Employee Details</h3>
+        {{  profile_form.as_p }}
+
+        <h3>Dependent Details</h3>
+        <div id="dependent-section">
+            {{ dependent_formset.management_form }}
+            {% for form in dependent_formset %}
+                <div class="dependent-form">
+                    {{ dependent_form.as_p }}
+                </div>
+            {% endfor %}
+        </div>
+
+        <button type="submit" class="btn btn-success">Save</button>
+        <button type="button" id="add-child" class="btn btn-secondary">Add Child</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById('add-child').addEventListener('click', function () {
+        // Implement JavaScript logic to add additional child fields dynamically.
+    });
+</script>
+{% endblock %}

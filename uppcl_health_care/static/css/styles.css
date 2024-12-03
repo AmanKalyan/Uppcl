@@ -1,0 +1,117 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #c7e8fa;
+    color: rgb(27, 25, 25);
+    padding: 1em 0;
+    text-align: center;
+    font-size: 1.5em;
+}
+
+
+/* Header Navigation Styles */
+.header-nav {
+    background-color: #b8e0f5; /* Dark blue background */
+    padding: 0.8rem 1rem; /* Add spacing around the navigation bar */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for a floating effect */
+}
+
+.header-nav ul {
+    list-style: none; /* Remove bullet points */
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+    display: flex; /* Align items horizontally */
+    justify-content: center; 
+    gap: 1.5rem; /* Add spacing between navigation items */
+}
+
+.header-nav li {
+    display: inline-block; /* Ensure each item behaves like a block for better spacing */
+}
+
+.header-nav a {
+    color: #ecf0f1; /* Light text color */
+    text-decoration: none; /* Remove underline from links */
+    font-weight: bold; 
+    padding: 0.5rem 1rem; 
+    border-radius: 5px; 
+}
+
+.header-nav a:hover {
+    background-color: #34495e; 
+    color: #ffffff
+}
+.header-nav a.active {
+    background-color: #22e674; 
+    color: #ffffff; /
+}
+
+.header-container {
+    display: flex; /* Use flexbox layout */
+    align-items: center; /* Vertically align items in the center */
+    justify-content: center; /* Center the content horizontally */
+    position: relative; /* To allow the logo to align to the left */
+    padding: 10px;
+}
+
+.logo {
+    position: absolute; /* Make the logo stay at the left */
+    left: 10px; /* Add some spacing from the left edge */
+    width: 50px; /* Adjust logo size */
+    height: auto; /* Maintain aspect ratio */
+}
+
+.header-container h1 {
+    flex: 1; /* Allow the heading to take up available space */
+    text-align: center; /* Center-align the heading text */
+    margin: 0; /* Remove default margins for better alignment */
+}
+
+footer {
+    background-color: #DAEFFA;
+    color: rgb(31, 29, 29);
+    text-align: center;
+    padding: 1em 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px 0;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.content {
+    width: 100%; /* Adjust the width as needed */
+    max-width: 400px; /* Limit the maximum width */
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    background-color: #fff; /* Optional */
+
+}
+
+.container {
+    padding: 20px;
+    max-width: 800px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+button:hover {
+    background-color: #45a049;
+}

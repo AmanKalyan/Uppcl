@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Welcome to Uppcl Health Care</h2>
+    <p>Please login to continue or sign up if you don't have an account.</p>
+
+    <!-- Login Form -->
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" id="username" name="username" placeholder="Username" required>
+        <input type="password" id="password" name="password" placeholder="Password" required>
+
+        <label>Group:</label>
+        <label for="group1">
+            <input type="radio" name="group" value="Group 1" required> Group 1
+        </label>
+        <label for="group2">
+            <input type="radio" name="group" value="Group 2" required> Group 2
+        </label>
+
+        <button type="submit">Login</button>
+    </form>
+
+    <!-- Message for Signing Up -->
+    <div class="message">
+        <p>Don't have an account? <a href="{% url 'user_signup' %}">Sign up here</a></p>
+    </div>
+</div>
+{% endblock %}

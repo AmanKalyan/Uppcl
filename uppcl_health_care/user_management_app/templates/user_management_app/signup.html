@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Create an Account</h2>
+<form method="POST">
+    {% csrf_token %}
+    
+    <input type="text" id="username" name="username" placeholder="Username" required>
+    <input type="password" id="password" name="password" placeholder="Password" required>
+    <input type="email" id="email" name="email" placeholder="Email" required>
+
+    <label>Group:</label>
+    <label for="group1">
+        <input type="radio" name="group" value="Group 1" required> Group 1
+    </label>
+    <label for="group2">
+        <input type="radio" name="group" value="Group 2" required> Group 2
+    </label>
+
+    <button type="submit">Sign Up</button>
+</form>
+
+<div class="message">
+    <p>Already have an account? <a href="{% url 'user_login' %}">Login here</a></p>
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Profile Management</title>
+</head>
+<body>
+    <h2>Manage Your Profile</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" value="{{ user.first_name }}" required>
+        </div>
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" value="{{ user.email }}" required>
+        </div>
+        <div>
+            <label for="designation">Designation:</label>
+            <input type="text" id="designation" name="designation" value="{{ user.profile.designation }}" required>
+        </div>
+        <div>
+            <button type="submit">Update Profile</button>
+        </div>
+    </form>
+    <p><a href="{% url 'user_logout' %}">Logout</a></p>
+</body>
+</html>
