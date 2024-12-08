@@ -3,8 +3,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .models import Profile, Dependent
-from .forms import ProfileForm, DependentForm
+from .models import Employee, Dependent
+from .forms import EmployeeForm, DependentFormSet, DependentForm
 
 
 def user_login(request):
@@ -68,63 +68,136 @@ def user_signup(request):
 
 def user_profile(request):
     try:
-        profile = Profile.objects.get(user=request.user)
-        dependents = Dependent.objects.filter(profile=profile)
-    except Profile.DoesNotExist:
+        employee = Employee.objects.get(user=request.user)
+        dependents = Dependent.objects.filter(employee=employee)
+    except Employee.DoesNotExist:
         return redirect('add_details')  # Redirect if no profile exists
 
     context = {
-        'profile': profile,
+        'employee': employee,
         'dependents': dependents,
     }
     return render(request, 'user_management_app/profile.html', context)
+
+# def add_details(request):
+#     employee, created = Employee.objects.get_or_create(user=request.user)
+#     dependent_instances = employee.dependents.all()
+   
+
+#     if request.method == 'POST':
+#         employee_form = EmployeeForm(request.POST, instance=employee)
+#         if employee_form.is_valid():
+#             employee_form.save()
+#             for dependent in dependent_instances:
+#                 dependent_id = f"dependent_{dependent.id}"
+#                 dependent.name = request.POST.get(f'name_{dependent_id}', dependent.name)
+#                 dependent.age = request.POST.get(f'age_{dependent_id}', dependent.age)
+#                 dependent.not_applicable = request.POST.get(f'not_applicable_{dependent_id}', 'off') == 'on'
+#                 dependent.save()
+#             if request.POST.get("add_child"):
+#                 Dependent.objects.create(profile=profile, relationship="Child")
+#             return redirect('user_profile')
+#     else:
+#         employee_form = EmployeeForm(instance=employee)
+#     return render(request, 'user_management_app/add_details.html', {'employee_form': employee_form, 'dependent_instances': dependent_instances})
+
 def add_details(request):
-    profile, created = Profile.objects.get_or_create(user=request.user)
-    dependent_instances = profile.dependents.all()
-    if request.method == 'POST':
-        profile_form = ProfileForm(request.POST, instance=profile)
-        if profile_form.is_valid():
-            profile_form.save()
-            for dependent in dependent_instances:
-                dependent_id = f"dependent_{dependent.id}"
-                dependent.name = request.POST.get(f'name_{dependent_id}', dependent.name)
-                dependent.age = request.POST.get(f'age_{dependent_id}', dependent.age)
-                dependent.not_applicable = request.POST.get(f'not_applicable_{dependent_id}', 'off') == 'on'
+    # Get or create the employee instance
+    employee, created = Employee.objects.get_or_create(user=request.user)
+
+    # Handle fixed dependents
+    fixed_dependents = {
+        "Father": Dependent.objects.filter(employee=employee, relationship="Father").first(),
+        "Mother": Dependent.objects.filter(employee=employee, relationship="Mother").first(),
+        "Spouse": Dependent.objects.filter(employee=employee, relationship="Spouse").first(),
+    }
+
+    if request.method == "POST":
+        # Handle POST data
+        employee_form = EmployeeForm(request.POST, instance=employee)
+        dependent_formset = DependentFormSet(
+            request.POST, queryset=employee.dependents.filter(relationship="Child"), prefix="children"
+        )
+        fixed_forms = {
+            relationship: DependentForm(request.POST, instance=fixed_dependents[relationship], prefix=relationship)
+            for relationship in fixed_dependents
+        }
+
+        if (
+            employee_form.is_valid()
+            and all(form.is_valid() for form in fixed_forms.values())
+            and dependent_formset.is_valid()
+        ):
+            employee_form.save()
+
+            for relationship, form in fixed_forms.items():
+                dependent = form.save(commit=False)
+                dependent.employee = employee
+                dependent.relationship = relationship
                 dependent.save()
-            if request.POST.get("add_child"):
-                Dependent.objects.create(profile=profile, relationship="Child")
-            return redirect('user_profile')
+
+            children = dependent_formset.save(commit=False)
+            for child in children:
+                child.employee = employee
+                child.relationship = "Child"
+                child.save()
+            dependent_formset.save_m2m()
+
+            return redirect("user_profile")
+
     else:
-        profile_form = ProfileForm(instance=profile)
-    return render(request, 'user_management_app/add_details.html', {'profile_form': profile_form, 'dependent_instances': dependent_instances})
+        employee_form = EmployeeForm(instance=employee)
+        dependent_formset = DependentFormSet(
+            queryset=employee.dependents.filter(relationship="Child"), prefix="children"
+        )
+        fixed_forms = {
+            relationship: DependentForm(instance=fixed_dependents[relationship], prefix=relationship)
+            for relationship in fixed_dependents
+        }
 
+    empty_form = DependentForm(prefix="children-empty").as_p()
 
-
+    return render(
+        request,
+        "user_management_app/add_details.html",
+        {
+            "employee_form": employee_form,
+            "dependent_formset": dependent_formset,
+            "fixed_forms": fixed_forms,
+            "empty_form": empty_form,
+        },
+    )
 
 def profile_management(request):
-    profile_form = ProfileForm()
-    dependent_form = DependentForm()
+    # Form initialization
+    EmployeeFormSet = formset_factory(EmployeeForm, extra=1)
+    DependentFormSet = formset_factory(DependentForm, extra=0)
 
-    if request.method == 'POST':
-        # Populate forms with submitted data
-        profile_form = ProfileForm(request.POST, instance=request.user.profile)
-        dependent_form = DependentForm(request.POST)
+    if request.method == "POST":
+        # Handle form submission
+        employee_formset = EmployeeFormSet(request.POST, prefix="employee")
+        dependent_formset = DependentFormSet(request.POST, prefix="dependent")
 
-        if profile_form.is_valid() and dependent_form.is_valid():
-            # Save the profile data
-            profile = profile_form.save(commit=False)
-            profile.user = request.user
-            profile.save()
+        if employee_formset.is_valid() and dependent_formset.is_valid():
+            # Save all forms
+            for form in employee_formset:
+                form.save()
+            for form in dependent_formset:
+                form.save()
+            return redirect('profile_success')
+    else:
+        # Initialize formsets
+        employee_formset = EmployeeFormSet(prefix="employee")
+        dependent_formset = DependentFormSet(prefix="dependent")
+        empty_form = DependentFormSet(prefix="dependent").empty_form
+        empty_form_html = empty_form.as_p().replace("\n", "")
 
-            # Save the dependent data
-            dependent = dependent_form.save(commit=False)
-            dependent.profile = profile
-            dependent.save()
-
-            # Redirect to the profile page
-            return redirect('user_profile')  # Replace with your profile page route
-
-    return render(request, 'user_management_app/add_details.html', {
-        'profile_form': profile_form,
-        'dependent_form': dependent_form,
-    })
+    return render(
+        request,
+        "user_management_app/add_details.html",
+        {
+            "employee_formset": employee_formset,
+            "dependent_formset": dependent_formset,
+            "empty_form": empty_form_html,
+        },
+    )

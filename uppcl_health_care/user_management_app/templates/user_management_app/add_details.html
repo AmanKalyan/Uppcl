@@ -1,31 +1,97 @@
 {% extends "base.html" %}
-
 {% block content %}
 <div class="container">
     <h2>Add Details</h2>
+
     <form method="POST">
         {% csrf_token %}
-        <h3>Employee Details</h3>
-        {{  profile_form.as_p }}
+        <div class="form-container">
+            <!-- Employee Details -->
+            <div class="employee-form-container">
+                <h3>Employee Details</h3>
+                {% for field in employee_form %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                </div>
+                {% endfor %}
+            </div>
 
-        <h3>Dependent Details</h3>
-        <div id="dependent-section">
+            <!-- Dependent Details -->
+            <div class="dependent-form-container">
+                <h3>Dependent Details</h3>
+                {% for relationship, form in fixed_forms.items %}
+                <div>
+                    <h4>{{ relationship }}</h4>
+                    {% for field in form %}
+                    <div class="form-group">
+                        {{ field.label_tag }}
+                        {{ field }}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Children Section -->
+        <div id="children-section">
+            <h3>Children</h3>
             {{ dependent_formset.management_form }}
             {% for form in dependent_formset %}
-                <div class="dependent-form">
-                    {{ dependent_form.as_p }}
+            <div class="child-form">
+                {% for field in form %}
+                <div>
+                    {{ field.label_tag }}
+                    {{ field }}
                 </div>
+                {% endfor %}
+            </div>
             {% endfor %}
         </div>
 
-        <button type="submit" class="btn btn-success">Save</button>
-        <button type="button" id="add-child" class="btn btn-secondary">Add Child</button>
+        <button type="button" id="add-child-btn" class="btn btn-primary">Add Child</button>
+        <button type="button" id="delete-child-btn" class="btn btn-danger">Delete Child</button>
+
+        <!-- Save Button -->
+        <div class="save-button-container">
+            <button type="submit" class="btn btn-success">Save</button>
+        </div>
     </form>
 </div>
 
 <script>
-    document.getElementById('add-child').addEventListener('click', function () {
-        // Implement JavaScript logic to add additional child fields dynamically.
+    // Add Child Form Logic
+    document.getElementById("add-child-btn").addEventListener("click", function () {
+        const childrenSection = document.getElementById("children-section");
+        const emptyFormHtml = `{{ empty_form|escapejs }}`;
+
+        const formCount = childrenSection.querySelectorAll(".child-form").length;
+        const newFormHtml = emptyFormHtml.replace(/__prefix__/g, formCount);
+
+        const newChildDiv = document.createElement("div");
+        newChildDiv.classList.add("child-form");
+        newChildDiv.innerHTML = newFormHtml;
+        childrenSection.appendChild(newChildDiv);
+
+        const totalForms = document.getElementById("id_children-TOTAL_FORMS");
+        totalForms.value = formCount + 1;
+    });
+
+    // Delete Child Form Logic
+    document.getElementById("delete-child-btn").addEventListener("click", function () {
+        const childrenSection = document.getElementById("children-section");
+        const childForms = childrenSection.querySelectorAll(".child-form");
+
+        if (childForms.length > 0) {
+            const lastChildForm = childForms[childForms.length - 1];
+            childrenSection.removeChild(lastChildForm);
+
+            const totalForms = document.getElementById("id_children-TOTAL_FORMS");
+            totalForms.value = childForms.length - 1;
+        } else {
+            alert("No child forms to delete!");
+        }
     });
 </script>
 {% endblock %}

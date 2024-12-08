@@ -1,14 +1,17 @@
+# forms.py
 from django import forms
-from .models import Profile, Dependent
+from django.forms import modelformset_factory
+from .models import Employee, Dependent
 
-# Form for updating user profile
-class ProfileForm(forms.ModelForm):
+class EmployeeForm(forms.ModelForm):
     class Meta:
-        model = Profile
-        fields = ['unit_posted', 'sap_id', 'ppo_number', 'mobile_number', 'email_id', 'designation']
+        model = Employee
+        fields = ['name', 'unit_posted', 'sap_id', 'ppo_number', 'mobile_number', 'email_id', 'designation']
 
-# Form for updating dependent details
 class DependentForm(forms.ModelForm):
     class Meta:
         model = Dependent
-        fields = ['relationship', 'name', 'age', 'not_applicable']
+        fields = ["name", "age"]
+
+
+DependentFormSet = modelformset_factory(Dependent, form=DependentForm, extra=1)

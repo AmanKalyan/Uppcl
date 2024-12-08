@@ -2,8 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User
 
 # Profile model to extend user details
-class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+class Employee(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="employee_profile")
+    name = models.CharField(max_length=100)
     unit_posted = models.CharField(max_length=255)
     sap_id = models.CharField(max_length=50, unique=True)
     ppo_number = models.CharField(max_length=50, blank=True, null=True)
@@ -15,12 +16,23 @@ class Profile(models.Model):
         return self.user.username
 
 # Dependent model
+
 class Dependent(models.Model):
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='dependents')
-    relationship = models.CharField(max_length=50)  # e.g., Father, Mother, Spouse, Child
-    name = models.CharField(max_length=255, blank=True, null=True)
-    age = models.IntegerField(blank=True, null=True)
-    not_applicable = models.BooleanField(default=False)  # For marking as not applicable
+    RELATIONSHIP_CHOICES = [
+        ('Father', 'Father'),
+        ('Mother', 'Mother'),
+        ('Spouse', 'Spouse'),
+        ('Child', 'Child'),
+    ]
+
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name="dependents",null = True, blank=True)
+    name = models.CharField(max_length=255)
+    age = models.PositiveIntegerField()
+    relationship = models.CharField(max_length=20, choices=RELATIONSHIP_CHOICES)
+
+    class Meta:
+        verbose_name = "Dependent"
+        verbose_name_plural = "Dependents"
 
     def __str__(self):
-        return f"{self.relationship} - {self.name or 'Not Applicable'}"
+        return f"{self.name} ({self.relationship})"

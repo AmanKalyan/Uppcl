@@ -4,31 +4,38 @@
 <div class="container">
     <h2>Employee Profile</h2>
 
-    <!-- Employee Details -->
-    <h3>Employee Details</h3>
-    <ul>
-        <li><strong>Name:</strong> {{ profile.name }}</li>
-        <li><strong>Unit Posted:</strong> {{ profile.unit }}</li>
-        <li><strong>SAP ID:</strong> {{ profile.sap_id }}</li>
-        <li><strong>P.P.O Number:</strong> {{ profile.ppo_number }}</li>
-        <li><strong>Mobile Number:</strong> {{ profile.mobile }}</li>
-        <li><strong>Email ID:</strong> {{ profile.email }}</li>
-        <li><strong>Designation:</strong> {{ profile.designation }}</li>
-    </ul>
+    <div class="form-container">
+        <!-- Employee Details Section -->
+        <div class="employee-form-container">
+            <h3>Employee Details</h3>
+            <ul>
+                <li><strong>Name:</strong> {{ employee.name }}</li>
+                <li><strong>Unit Posted:</strong> {{ employee.unit }}</li>
+                <li><strong>SAP ID:</strong> {{ employee.sap_id }}</li>
+                <li><strong>P.P.O Number:</strong> {{ employee.ppo_number }}</li>
+                <li><strong>Mobile Number:</strong> {{ employee.mobile }}</li>
+                <li><strong>Email ID:</strong> {{ employee.email }}</li>
+                <li><strong>Designation:</strong> {{ employee.designation }}</li>
+            </ul>
+        </div>
 
-    <!-- Dependent Details -->
-    <h3>Dependent Details</h3>
-    <ul>
-        {% for dependent in dependents %}
-            <li>
-                <strong>{{ dependent.relation }}</strong>: 
-                {{ dependent.name }} (Age: {{ dependent.age }})
-            </li>
-        {% empty %}
-            <p>No dependent details found.</p>
-        {% endfor %}
-    </ul>
+        <!-- Dependent Details Section -->
+        <div class="dependent-form-container">
+            <h3>Dependent Details</h3>
+            <ul>
+                {% for dependent in dependents %}
+                    <li>
+                        <strong>{{ dependent.relationship }}</strong>: {{ dependent.name }} (Age: {{ dependent.age }})
+                    </li>
+                {% empty %}
+                    <p>No dependent details found.</p>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 
-    <a href="{% url 'add_details' %}" class="btn btn-primary">Add Details</a>
+    <div class="save-button-container">
+        <a href="{% url 'add_details' %}" class="btn btn-primary">Edit Details</a>
+    </div>
 </div>
 {% endblock %}
