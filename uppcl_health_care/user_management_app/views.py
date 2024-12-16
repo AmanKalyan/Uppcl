@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.contrib import messages
 from .models import Employee, Dependent
@@ -35,7 +36,7 @@ def reimbursement_selection(request):
     if request.method == 'POST':
         reimbursement_type = request.POST.get('reimbursement_type')
         if reimbursement_type == 'medical_reimbursement':
-            return redirect('medical_reimbursement:patient_selection')
+            return redirect('medical_reimbursement:medical_reimbursement')
         elif reimbursement_type == 'medical_cashless':
             return redirect('medical_cashless:cashless_treatment')
         elif reimbursement_type == 'medical_advance':

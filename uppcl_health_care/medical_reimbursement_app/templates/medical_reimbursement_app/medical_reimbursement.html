@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Medical Reimbursement</h2>
+
+    <!-- Form for selecting treatment type -->
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <!-- Treatment Type -->
+        <label>
+            <input type="radio" name="treatment_type" value="indoor" id="indoor_radio" onchange="toggleTreatmentOptions()" required> Indoor Treatment
+        </label>
+        <label>
+            <input type="radio" name="treatment_type" value="outdoor" id="outdoor_radio" onchange="toggleTreatmentOptions()" required> Outdoor Treatment
+        </label>
+        
+        <!-- Hospital Type -->
+        <div id="hospital_options" style="margin-top: 20px;">
+            <label>
+                <input type="radio" name="hospital_type" value="government" onchange="toggleHospitalDropdown('government')" required> Government Hospital
+            </label>
+            <label>
+                <input type="radio" name="hospital_type" value="empaneled" onchange="toggleHospitalDropdown('empaneled')" required> Empaneled Hospital
+            </label>
+            <label id="non_empaneled_label">
+                <input type="radio" name="hospital_type" value="non_empaneled" onchange="toggleHospitalDropdown('non_empaneled')" required> Non-Empaneled Hospital
+            </label>
+        </div>
+
+        <!-- Dropdowns and Text Fields -->
+        <div id="hospital_dropdowns">
+            <!-- Government Hospital Dropdown -->
+            <div id="government_dropdown" class="dropdown-options" style="display: none;">
+                <select name="government_hospital" id="government_hospital_select" onchange="toggleOthersField(this)">
+                    <option value="hospital1">Government Hospital 1</option>
+                    <option value="hospital2">Government Hospital 2</option>
+                    <option value="others">Others</option>
+                </select>
+                <div id="government_hospital_others_field" style="display: none; margin-top: 10px;">
+                    <label>Enter Hospital Name:</label>
+                    <input type="text" name="government_hospital_others">
+                </div>
+            </div>
+
+            <!-- Empaneled Hospital Dropdown -->
+            <div id="empaneled_dropdown" class="dropdown-options" style="display: none;">
+                <select name="empaneled_hospital">
+                    <option value="hospital1">Empaneled Hospital 1</option>
+                    <option value="hospital2">Empaneled Hospital 2</option>
+                    <!-- Add more options here -->
+                </select>
+                <label>
+                    <input type="checkbox" id="income_tax_exempt" onchange="toggleFileUpload()"> Does this hospital qualify for Income Tax Exemption?
+                </label>
+                <input type="file" id="exemption_file" name="income_tax_document" style="display: none;">
+            </div>
+
+            <!-- Non-Empaneled Hospital Text Field -->
+            <div id="non_empaneled_field" class="dropdown-options" style="display: none;">
+                <label>Enter Hospital Name:</label>
+                <input type="text" name="non_empaneled_hospital">
+                <label>
+                    <input type="checkbox" id="income_tax_exempt_non" onchange="toggleFileUpload()"> Does this hospital qualify for Income Tax Exemption?
+                </label>
+                <input type="file" id="exemption_file_non" name="income_tax_document_non" style="display: none;">
+            </div>
+        </div>
+        
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+<script>
+    // Show options based on treatment type
+    function toggleTreatmentOptions() {
+        const indoorRadio = document.getElementById("indoor_radio").checked;
+        const outdoorRadio = document.getElementById("outdoor_radio").checked;
+
+        document.getElementById("non_empaneled_label").style.display = indoorRadio ? "block" : "none";
+    }
+    // toggle text field for others option in government hospital
+    function toggleOthersField(selectElement) {
+    const othersField = document.getElementById("government_hospital_others_field");
+    othersField.style.display = selectElement.value === "others" ? "block" : "none";
+    }   
+
+    // Show specific dropdowns or fields based on hospital type
+    function toggleHospitalDropdown(hospitalType) {
+        const dropdowns = document.querySelectorAll(".dropdown-options");
+        dropdowns.forEach(dropdown => dropdown.style.display = "none");
+
+        if (hospitalType === "government") {
+            document.getElementById("government_dropdown").style.display = "block";
+        } else if (hospitalType === "empaneled") {
+            document.getElementById("empaneled_dropdown").style.display = "block";
+        } else if (hospitalType === "non_empaneled") {
+            document.getElementById("non_empaneled_field").style.display = "block";
+        }
+    }
+
+    // Show file upload option for income tax exemption
+    function toggleFileUpload() {
+        const incomeTaxCheckbox = document.getElementById("income_tax_exempt").checked;
+        const incomeTaxFile = document.getElementById("exemption_file");
+        incomeTaxFile.style.display = incomeTaxCheckbox ? "block" : "none";
+
+        const incomeTaxCheckboxNon = document.getElementById("income_tax_exempt_non").checked;
+        const incomeTaxFileNon = document.getElementById("exemption_file_non");
+        incomeTaxFileNon.style.display = incomeTaxCheckboxNon ? "block" : "none";
+    }
+</script>
+{% endblock %}

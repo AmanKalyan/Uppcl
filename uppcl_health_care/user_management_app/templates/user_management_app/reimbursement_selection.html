@@ -4,7 +4,7 @@
 <div class="container">
     <h2>Choose Your Reimbursement Facility</h2>
 
-    <form method="POST">
+    <form method="POST" action="{% url 'medical_reimbursement' %}">
         {% csrf_token %}
         
         <label for="medical_reimbursement">

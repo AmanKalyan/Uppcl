@@ -71,6 +71,19 @@ header {
 }
 
 
+/* Add spacing and styling for dropdowns and text fields */
+select, input[type="text"] {
+    margin: 10px 0;
+    width: 100%;
+    padding: 10px;
+}
+
+/* Keep file upload inline */
+#income-tax-upload {
+    margin-top: 10px;
+}
+
+
 /* General Container Styling */
 .container {
     display: flex;

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Kindly confirm the patient you are availing the service for</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <ul>
+            {% for dependent in dependents %}
+            <li>
+                <label>
+                    <input type="radio" name="patient" value="{{ dependent.id }}" required>
+                    {{ dependent.name }} ({{ dependent.relationship }})
+                </label>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <div>
+            <h4>Upload Documents</h4>
+            <label>Document A</label>
+            <input type="file" name="document_a" required>
+            <label>Document B</label>
+            <input type="file" name="document_b" required>
+            <label>Document C</label>
+            <input type="file" name="document_c" required>
+            <label>Document D</label>
+            <input type="file" name="document_d" required>
+            <label>Document E</label>
+            <input type="file" name="document_e" required>
+        </div>
+
+        <div>
+            <h4>Additional Information</h4>
+            <input type="text" name="field1" placeholder="Enter Field 1">
+            <input type="text" name="field2" placeholder="Enter Field 2">
+            <input type="text" name="field3" placeholder="Enter Field 3">
+            <input type="text" name="field4" placeholder="Enter Field 4">
+        </div>
+
+        <button type="submit">Submit</button>
+    </form>
+</div>
+{% endblock %}
