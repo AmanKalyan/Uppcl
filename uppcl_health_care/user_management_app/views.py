@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from .models import Employee, Dependent
 from .forms import EmployeeForm, DependentFormSet, DependentForm
-
+from django.urls import reverse
 
 def user_login(request):
     if request.method == "POST":
@@ -17,7 +17,7 @@ def user_login(request):
         if user is not None:
             login(request, user)  # Optionally, store the group information in session or redirect to different views based on the group
             request.session['group'] = group  # Save selected group to session
-            return redirect('reimbursement_selection')  # Redirect after successful login
+            return redirect('user_management:reimbursement_selection')  # Redirect after successful login
         else:
             return render(request, 'user_management_app/login.html', {'error': 'Invalid credentials'})
     return render(request, 'user_management_app/login.html')
@@ -26,7 +26,7 @@ def user_login(request):
 @login_required
 def user_logout(request):
     logout(request) #log the user out
-    return redirect('user_login')
+    return redirect('user_management:user_login')
 
 def home(request):
     # Redirect to the login page when visiting the root URL
@@ -35,12 +35,18 @@ def home(request):
 def reimbursement_selection(request):
     if request.method == 'POST':
         reimbursement_type = request.POST.get('reimbursement_type')
+        print(f"Reimbursement Type: {reimbursement_type}")  # Debugging
+         # Redirect based on selected reimbursement type
         if reimbursement_type == 'medical_reimbursement':
             return redirect('medical_reimbursement:medical_reimbursement')
         elif reimbursement_type == 'medical_cashless':
             return redirect('medical_cashless:cashless_treatment')
         elif reimbursement_type == 'medical_advance':
-            return redirect('medical_advance:advance_treatment')
+            return redirect('medical_advance_treatment:medical_advance_form')
+          # If no valid type is selected, re-render the form
+        return render(request, 'user_management_app/reimbursement_selection.html', {
+            'error_message': 'Please select a valid option.'
+        })
     return render(request, 'user_management_app/reimbursement_selection.html')
 
 def user_signup(request):
@@ -53,7 +59,7 @@ def user_signup(request):
         
         if User.objects.filter(username=username).exists():
             messages.error(request, 'Username already exists')
-            return redirect('user_signup')
+            return redirect('user_management:user_signup')
         
         #create the new user
         user = User.objects.create_user(username=username, password=password, email=email)
@@ -63,7 +69,7 @@ def user_signup(request):
         request.session['group'] = group  # Save selected group to session
         
         messages.success(request, 'Account created successfully! Please log in.')
-        return redirect('user_login')
+        return redirect('user_management:user_login')
     return render(request, 'user_management_app/signup.html')
 
 
@@ -72,7 +78,7 @@ def user_profile(request):
         employee = Employee.objects.get(user=request.user)
         dependents = Dependent.objects.filter(employee=employee)
     except Employee.DoesNotExist:
-        return redirect('add_details')  # Redirect if no profile exists
+        return redirect('user_management:add_details')  # Redirect if no profile exists
 
     context = {
         'employee': employee,
@@ -144,7 +150,7 @@ def add_details(request):
                 child.save()
             dependent_formset.save_m2m()
 
-            return redirect("user_profile")
+            return redirect("user_management:user_profile")
 
     else:
         employee_form = EmployeeForm(instance=employee)

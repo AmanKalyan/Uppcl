@@ -4,22 +4,26 @@
 <div class="container">
     <h2>Choose Your Reimbursement Facility</h2>
 
-    <form method="POST" action="{% url 'medical_reimbursement' %}">
+    <form method="POST" action=".">
         {% csrf_token %}
         
         <label for="medical_reimbursement">
-            <input type="radio" id="medical_reimbursement" name="reimbursement_type" value="Medical Reimbursement" required> Medical Reimbursement
+            <input type="radio" id="medical_reimbursement" name="reimbursement_type" value="medical_reimbursement" required> Medical Reimbursement
         </label><br>
         
         <label for="medical_cashless">
-            <input type="radio" id="medical_cashless" name="reimbursement_type" value="Medical Cashless" required> Medical Cashless
+            <input type="radio" id="medical_cashless" name="reimbursement_type" value="medical_cashless" required> Medical Cashless
         </label><br>
         
         <label for="medical_advance">
-            <input type="radio" id="medical_advance" name="reimbursement_type" value="Medical Advance" required> Medical Advance
+            <input type="radio" id="medical_advance" name="reimbursement_type" value="medical_advance" required> Medical Advance
         </label><br>
         
-        <button type="submit">Submit</button>
+        <button type="submit" class = "btn" >Submit</button>
     </form>
+    <!-- Display error message if any -->
+{% if error_message %}
+<p style="color: red;">{{ error_message }}</p>
+{% endif %}
 </div>
 {% endblock %}

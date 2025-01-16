@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-main">
+    <h2>Medical Reimbursement Form</h2>
+    
+    <h4>Employee Details</h4>
+    <p>Employee ID: {{ reimbursement.employee.employee_id }}</p>
+    <p>Name of Employee: {{ reimbursement.employee.name }}</p>
+    <p>Employment Status: {{ reimbursement.employee.status }}</p>
+    <p>PPO Number (if retired): {{ reimbursement.employee.ppo_number }}</p>
+    <p>Pay Matrix: {{ reimbursement.employee.pay_matrix }}</p>
+    <p>Place of Posting/Pension Unit: {{ reimbursement.employee.posting_unit }}</p>
+
+    
+    <h4>Patient Details</h4>
+{% if reimbursement.patient %}
+    <p>Patient Name: {{ reimbursement.patient.name }}</p>
+    <p>Age of Patient: {{ reimbursement.patient.age }}</p>
+    <p>Relationship: {{ reimbursement.patient.relationship }}</p>
+{% else %}
+    <p>Patient Name: Self</p>
+    <p>Age of Patient: {{ reimbursement.employee.age }}</p>
+    <p>Relationship: Self</p>
+{% endif %}
+
+    <h4>Hospital Details</h4>
+    <p>Hospital Name: {{ reimbursement.hospital_name }}</p>
+    <p>Type of Hospital: {{ reimbursement.hospital_type }}</p>
+    <p>Income Tax Exempted: {{ reimbursement.income_tax_exempt|yesno:"Yes,No" }}</p>
+
+    {% if indoor_details %}
+        <h4>Indoor Treatment Details</h4>
+        <!-- Render Indoor Details -->
+    {% elif outdoor_details %}
+        <h4>Outdoor Treatment Details</h4>
+        <!-- Render Outdoor Details -->
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-success">Confirm</button>
+    </form>
+</div>
+{% endblock %}

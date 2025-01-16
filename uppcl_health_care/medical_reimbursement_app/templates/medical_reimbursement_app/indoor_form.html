@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-main">
+    <h2>Indoor Treatment Details</h2>
+    
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <!-- Ward Entitled -->
+        <label for="ward_entitled">Ward Entitled:</label>
+        <select id="ward_entitled" name="ward_entitled" required>
+            <option value="General">General</option>
+            <option value="Semi Private">Semi Private</option>
+            <option value="Private">Private</option>
+        </select>
+
+        <!-- Diagnosis -->
+        <label for="diagnosis">Diagnosis:</label>
+        <textarea id="diagnosis" name="diagnosis" required></textarea>
+
+        <!-- Treating Doctor -->
+        <label for="treating_doctor">Treating Doctor:</label>
+        <input type="text" id="treating_doctor" name="treating_doctor" required>
+
+        <!-- Date of Admission -->
+        <label for="admission_date">Date of Admission:</label>
+        <input type="date" id="admission_date" name="admission_date" required>
+
+        <!-- Date of Discharge -->
+        <label for="discharge_date">Date of Discharge:</label>
+        <input type="date" id="discharge_date" name="discharge_date" required>
+
+        <!-- Expenses -->
+        <h4>Expenses</h4>
+
+        <label for="accommodation_general">Accommodation - General:</label>
+        <input type="number" id="accommodation_general" name="accommodation_general" step="0.01">
+
+        <label for="accommodation_semi_private">Accommodation - Semi Private:</label>
+        <input type="number" id="accommodation_semi_private" name="accommodation_semi_private" step="0.01">
+
+        <label for="accommodation_private">Accommodation - Private:</label>
+        <input type="number" id="accommodation_private" name="accommodation_private" step="0.01">
+
+        <label for="accommodation_icu">Accommodation - ICU:</label>
+        <input type="number" id="accommodation_icu" name="accommodation_icu" step="0.01">
+
+        <label for="investigations">Investigations:</label>
+        <textarea id="investigations" name="investigations"></textarea>
+
+        <label for="procedures">Medical Procedures:</label>
+        <textarea id="procedures" name="procedures"></textarea>
+
+        <label for="medicines_consumables">Medicines & Consumables:</label>
+        <textarea id="medicines_consumables" name="medicines_consumables"></textarea>
+
+        <label for="implants">Implants:</label>
+        <textarea id="implants" name="implants"></textarea>
+
+        <label for="other_charges">Other Charges:</label>
+        <textarea id="other_charges" name="other_charges"></textarea>
+
+        <label for="total_expenses">Total Expenses:</label>
+        <input type="number" id="total_expenses" name="total_expenses" step="0.01" required>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+<script>
+    // Client-side validation for total expenses
+    document.addEventListener("DOMContentLoaded", function () {
+        const totalExpensesInput = document.querySelector("#id_total_expenses");
+        if (totalExpensesInput) {
+            totalExpensesInput.addEventListener("input", function (e) {
+                const value = e.target.value;
+                if (value && !/^\d*(\.\d{0,2})?$/.test(value)) {
+                    alert("Please enter a valid decimal number (e.g., 1000.50).");
+                    e.target.value = value.slice(0, -1);
+                }
+            });
+        }
+    });
+</script>
+
+
+{% endblock %}

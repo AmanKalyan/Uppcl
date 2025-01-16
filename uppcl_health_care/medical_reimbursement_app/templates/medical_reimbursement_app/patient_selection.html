@@ -1,44 +1,45 @@
 {% extends "base.html" %}
-
 {% block content %}
 <div class="container">
-    <h2>Kindly confirm the patient you are availing the service for</h2>
-    <form method="POST" enctype="multipart/form-data">
+    <h2>Kindly Select the Patient You Are Availing the Service For</h2>
+    <p>Please select a valid patient and treatment type.</p>
+
+    {% if error_message %}
+        <div class="alert alert-danger">{{ error_message }}</div>
+    {% endif %}
+
+    <form method="POST">
         {% csrf_token %}
-        <ul>
-            {% for dependent in dependents %}
-            <li>
-                <label>
-                    <input type="radio" name="patient" value="{{ dependent.id }}" required>
-                    {{ dependent.name }} ({{ dependent.relationship }})
-                </label>
-            </li>
-            {% endfor %}
-        </ul>
 
+        <!-- Patient Selection -->
         <div>
-            <h4>Upload Documents</h4>
-            <label>Document A</label>
-            <input type="file" name="document_a" required>
-            <label>Document B</label>
-            <input type="file" name="document_b" required>
-            <label>Document C</label>
-            <input type="file" name="document_c" required>
-            <label>Document D</label>
-            <input type="file" name="document_d" required>
-            <label>Document E</label>
-            <input type="file" name="document_e" required>
+            <p><strong>Patients:</strong></p>
+            <ul>
+                {% for patient in patients %}
+                    <li>
+                        <label>
+                            <input type="radio" name="patient" value="{{ patient.id }}" required>
+                            {{ patient.name }}
+                        </label>
+                    </li>
+                {% endfor %}
+            </ul>
         </div>
 
+        <!-- Treatment Type -->
         <div>
-            <h4>Additional Information</h4>
-            <input type="text" name="field1" placeholder="Enter Field 1">
-            <input type="text" name="field2" placeholder="Enter Field 2">
-            <input type="text" name="field3" placeholder="Enter Field 3">
-            <input type="text" name="field4" placeholder="Enter Field 4">
+            <label for="treatment_type"><strong>Treatment Type:</strong></label>
+            <select id="treatment_type" name="treatment_type" required>
+                <option value="" disabled selected>Select Treatment Type</option>
+                <option value="Indoor">Indoor</option>
+                <option value="Outdoor">Outdoor</option>
+            </select>
         </div>
 
-        <button type="submit">Submit</button>
+        <!-- Submit Button -->
+        <div class="mt-3">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
     </form>
 </div>
 {% endblock %}

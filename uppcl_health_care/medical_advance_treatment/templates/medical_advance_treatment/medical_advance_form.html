@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Medical Advance Form</h1>
+
+    {% if error_message %}
+        <p style="color: red;">{{ error_message }}</p>
+    {% endif %}
+
+    <form method="post" action="{% url 'medical_advance_treatment:medical_advance_form' %}">
+        {% csrf_token %}
+        <h4>Employee Details</h4>
+        <p>Employee ID: {{ employee.sap_id}}</p>
+        <p>Name: {{ employee.name }}</p>
+        <p>Serving status: {{ employee.serving_status }}</p>
+        <p>Designation: {{ employee.designation }}</p>
+        <p>Place of Posting: {{ employee.unit_posted }}</p>
+
+        <h4>Patient Details</h4>
+        <label for="patient">Name of the Patient:</label>
+        <select name="patient" required>
+            {% for patient in patients %}
+                <option value="{{ patient.id }}">{{ patient.name }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="mobile_number">Mobile Number:</label>
+        <input type="text" name="mobile_number" maxlength="10" required />
+
+        <label for="hospital_name">Name of the Hospital:</label>
+        <input type="text" name="hospital_name" required />
+
+        <label for="treating_doctor">Treating Doctor:</label>
+        <input type="text" name="treating_doctor" required />
+
+        <label for="diagnosis">Diagnosis:</label>
+        <input type="text" name="diagnosis" required />
+
+        <label>Treatment Type:</label>
+        <input type="radio" name="treatment_type" value="Conservative" required /> Conservative
+        <input type="radio" name="treatment_type" value="Surgical" required /> Surgical
+
+        <h4>Medical Advance Details</h4>
+        <label for="medical_procedure_cghs">Medical Procedure Listed in CGHS:</label>
+        <input type="text" name="medical_procedure_cghs" />
+        <label for="estimated_cost_cghs">Estimated Cost:</label>
+        <input type="number" name="estimated_cost_cghs" step="0.01" />
+
+        <label for="medical_procedure_uncghs">Medical Procedure Unlisted in CGHS:</label>
+        <input type="text" name="medical_procedure_uncghs" />
+        <label for="estimated_cost_uncghs">Estimated Cost:</label>
+        <input type="number" name="estimated_cost_uncghs" step="0.01" />
+
+        <label for="implants_cghs">Implants Listed in CGHS:</label>
+        <input type="text" name="implants_cghs" />
+        <label for="estimated_cost_implants_cghs">Estimated Cost:</label>
+        <input type="number" name="estimated_cost_implants_cghs" step="0.01" />
+
+        <label for="implants_uncghs">Implants Unlisted in CGHS:</label>
+        <input type="text" name="implants_uncghs" />
+        <label for="estimated_cost_implants_uncghs">Estimated Cost:</label>
+        <input type="number" name="estimated_cost_implants_uncghs" step="0.01" />
+
+        <label for="other_consumables">Other Consumables:</label>
+        <input type="text" name="other_consumables" />
+        <label for="estimated_cost_consumables">Estimated Cost:</label>
+        <input type="number" name="estimated_cost_consumables" step="0.01" />
+
+        <label for="total_cost">Total Cost:</label>
+        <input type="number" name="total_cost" step="0.01" required />
+
+        <label for="remarks">Remarks (if any):</label>
+        <textarea name="remarks"></textarea>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    {% if errors %}
+        <ul style="color: red;">
+            {% for field, error_list in errors.items %}
+                <li>{{ field }}: {{ error_list|join:", " }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+{% endblock %}

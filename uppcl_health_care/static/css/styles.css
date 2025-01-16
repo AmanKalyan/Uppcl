@@ -36,16 +36,16 @@ header {
 }
 
 .header-nav a {
-    color: #ecf0f1;
-    text-decoration: none;
+    color: #333435;
+    text-decoration : none;
     font-weight: bold;
     padding: 0.5rem 1rem;
     border-radius: 5px;
 }
 
 .header-nav a:hover {
-    background-color: #34495e;
-    color: #ffffff;
+    background-color: #ffffff;
+    color: #2c2e2f;
 }
 
 /* Header Container */
@@ -71,6 +71,8 @@ header {
 }
 
 
+
+
 /* Add spacing and styling for dropdowns and text fields */
 select, input[type="text"] {
     margin: 10px 0;
@@ -86,9 +88,9 @@ select, input[type="text"] {
 
 /* General Container Styling */
 .container {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    /* display: flex; */
+    /* flex-direction: column;
+    gap: 20px; */
     padding: 20px;
     max-width: 1000px;
     margin: 20px auto;
@@ -97,6 +99,21 @@ select, input[type="text"] {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     overflow: auto; /* Allow scrolling if content overflows */
 }
+
+/* General Container Styling */
+.container-main {
+   
+    gap: 20px;
+    padding: 20px;
+    max-width: 1000px;
+    margin: 20px auto;
+    background-color: #e4e4e4;
+    border-radius: 9px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: auto; /* Allow scrolling if content overflows */
+}
+
+
 
 /* Form Container */
 .form-container {
@@ -138,6 +155,95 @@ form .form-group textarea {
     flex: 2;
     max-width: 300px; /* Prevent stretching */
 }
+
+
+/* CSS */
+button , .btn {
+  align-items: center;
+  appearance: none;
+  background-color: #cee9f7;
+  border-radius: 24px;
+  border-style: none;
+  box-shadow: rgba(0, 0, 0, .2) 0 3px 5px -1px,rgba(0, 0, 0, .14) 0 6px 10px 0,rgba(0, 0, 0, .12) 0 1px 18px 0;
+  box-sizing: border-box;
+  color: #3c4043;
+  cursor: pointer;
+  display: inline-flex;
+  fill: currentcolor;
+  font-family: "Google Sans",Roboto,Arial,sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  height: 48px;
+  justify-content: center;
+  letter-spacing: .25px;
+  line-height: normal;
+  max-width: 100%;
+  overflow: visible;
+  padding: 2px 24px;
+  position: relative;
+  text-align: center;
+  text-transform: none;
+  transition: box-shadow 280ms cubic-bezier(.4, 0, .2, 1),opacity 15ms linear 30ms,transform 270ms cubic-bezier(0, 0, .2, 1) 0ms;
+  user-select: none;
+  touch-action: manipulation;
+  width: auto;
+  will-change: transform,opacity;
+  z-index: 0;
+}
+
+button:hover {
+  background: #F6F9FE;
+  color: #174ea6;
+}
+
+.form-submit-button:active {
+  box-shadow: 0 4px 4px 0 rgb(60 64 67 / 30%), 0 8px 12px 6px rgb(60 64 67 / 15%);
+  outline: none;
+}
+
+.form-submit-button :focus {
+  outline: none;
+  border: 2px solid #4285f4;
+}
+
+form button {
+    align-items: center;
+    appearance: none;
+    background-color: #cee9f7;
+    border-radius: 24px;
+    border-style: none;
+    box-shadow: rgba(0, 0, 0, .2) 0 3px 5px -1px,rgba(0, 0, 0, .14) 0 6px 10px 0,rgba(0, 0, 0, .12) 0 1px 18px 0;
+    box-sizing: border-box;
+    color: #3c4043;
+    cursor: pointer;
+    display: inline-flex;
+    fill: currentcolor;
+    font-family: "Google Sans",Roboto,Arial,sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    height: 48px;
+    justify-content: center;
+    letter-spacing: .25px;
+    line-height: normal;
+    max-width: 100%;
+    overflow: visible;
+    padding: 2px 24px;
+    position: relative;
+    text-align: center;
+    text-transform: none;
+    transition: box-shadow 280ms cubic-bezier(.4, 0, .2, 1),opacity 15ms linear 30ms,transform 270ms cubic-bezier(0, 0, .2, 1) 0ms;
+    user-select: none;
+    touch-action: manipulation;
+    width: auto;
+    will-change: transform,opacity;
+    z-index: 0;
+}
+
+form button:hover {
+    background: #F6F9FE;
+    color: #174ea6;
+}
+
 
 /* Children Section */
 #children-section {

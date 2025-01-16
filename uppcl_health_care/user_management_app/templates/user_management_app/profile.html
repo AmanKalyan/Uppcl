@@ -10,12 +10,15 @@
             <h3>Employee Details</h3>
             <ul>
                 <li><strong>Name:</strong> {{ employee.name }}</li>
-                <li><strong>Unit Posted:</strong> {{ employee.unit }}</li>
+                <li><strong>Serving Status:</strong> {{ employee.serving_status }}</li>
+                <li><strong>Unit Posted:</strong> {{ employee.unit_posted }}</li>
                 <li><strong>SAP ID:</strong> {{ employee.sap_id }}</li>
                 <li><strong>P.P.O Number:</strong> {{ employee.ppo_number }}</li>
-                <li><strong>Mobile Number:</strong> {{ employee.mobile }}</li>
-                <li><strong>Email ID:</strong> {{ employee.email }}</li>
+                <li><strong>Mobile Number:</strong> {{ employee.mobile_number }}</li>
+                <li><strong>Email ID:</strong> {{ employee.email_id }}</li>
                 <li><strong>Designation:</strong> {{ employee.designation }}</li>
+                <li><strong>Pay Matrix:</strong> {{ employee.pay_matrix }}</li>
+                <li><strong>Gender:</strong> {{ employee.gender }}</li>
             </ul>
         </div>
 
@@ -35,7 +38,7 @@
     </div>
 
     <div class="save-button-container">
-        <a href="{% url 'add_details' %}" class="btn btn-primary">Edit Details</a>
+        <a href="{% url 'user_management:add_details' %}" class="btn btn-primary">Edit Details</a>
     </div>
 </div>
 {% endblock %}

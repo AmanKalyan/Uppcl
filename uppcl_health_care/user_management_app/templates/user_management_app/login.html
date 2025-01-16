@@ -10,16 +10,16 @@
 
     <label>Group:</label>
     <label for="group1">
-        <input type="radio" name="group" value="Group 1" required> Group 1
+        <input type="radio" name="group" value="Group 1" required> Serving
     </label>
     <label for="group2">
-        <input type="radio" name="group" value="Group 2" required> Group 2
+        <input type="radio" name="group" value="Group 2" required> Retired
     </label>
 
     <button type="submit">Login</button>
 </form>
 
 <div class="message">
-    <p>Don't have an account? <a href="{% url 'user_signup' %}">Sign up here</a></p>
+    <p>Don't have an account? <a href="{% url 'user_management:user_signup' %}">Sign up here</a></p>
 </div>
 {% endblock %}

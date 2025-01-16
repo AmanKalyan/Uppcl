@@ -21,8 +21,14 @@
         <div class="header-nav">
             <nav>
                 <ul>
-                    <li><a href= "{% url 'reimbursement_selection' %}">Home</a></li>
-                    <li><a href="{% url 'user_profile' %}">Profile Section</a></li>
+                    <li><a href= "{% url 'user_management:reimbursement_selection' %}">Home</a></li>
+                    <li><a href="{% url 'user_management:user_profile' %}">Profile Section</a></li>
+                    {% if user.is_authenticated %}
+                        <li>
+                            Welcome {{ user.username }} 
+                            (<a href="{% url 'user_management:user_logout' %}">Log out</a>)
+                        </li>
+                    {% endif %}
                 </ul>
             </nav>
         </div>

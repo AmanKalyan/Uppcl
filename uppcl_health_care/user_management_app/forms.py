@@ -6,7 +6,7 @@ from .models import Employee, Dependent
 class EmployeeForm(forms.ModelForm):
     class Meta:
         model = Employee
-        fields = ['name', 'unit_posted', 'sap_id', 'ppo_number', 'mobile_number', 'email_id', 'designation']
+        fields = ['name','gender','serving_status', 'sap_id', 'ppo_number','designation','pay_matrix', 'unit_posted', 'mobile_number', 'email_id', ]
 
 class DependentForm(forms.ModelForm):
     class Meta:

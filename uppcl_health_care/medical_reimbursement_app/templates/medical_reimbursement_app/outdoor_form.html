@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-main">
+   
+    <h2>Outdoor Treatment Form</h2>
+    <form method="post">
+        {% csrf_token %}
+        <label for="ward_entitled">Ward Entitled:</label>
+        <input type="text" name="ward_entitled" required><br>
+
+        <label for="diagnosis">Diagnosis:</label>
+        <input type="text" name="diagnosis" required><br>
+
+        <label for="treating_doctor">Treating Doctor:</label>
+        <input type="text" name="treating_doctor" required><br>
+
+        <label for="treatment_period_from">Treatment Period From:</label>
+        <input type="date" name="treatment_period_from" required><br>
+
+        <label for="treatment_period_to">Treatment Period To:</label>
+        <input type="date" name="treatment_period_to" required><br>
+
+        <label for="total_expenses">Total Expenses:</label>
+        <input type="number" name="total_expenses" step="0.01" required><br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    {% endblock %}
